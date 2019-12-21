@@ -1,31 +1,63 @@
 import React from 'react';
 
-function draw(size) {
+function draw(size, stage=0) {
+  const rounds = ["Finals", "Semi-Finals", "Quarter-finals", "Octafinals", "Round 2", "Round 1"];
+  console.log('Stage', stage, stage % 2);
   if (size === 1) {
-    let indent = ''
-    for (let i = 0; i < size; i++) {
-      // indent+= 't'
-      indent+= '\u00A0';
-    }
-    let indent2 = indent.substring(0, size - 1);
-    return <span><br />{indent}Undecided size={size}, <br />Name {indent2}VS Name</span>
+    return <span className='col'><div className='row'>{rounds[stage]},</div><div className='col'>[Name VS Name]</div></span>
   }
   else {
-    let indent = ''
-    for (let i = 0; i < size; i++) {
-      // indent+= 't'
-      indent+= '\u00A0';
+    // {(stage % 2 === 0) ? 'col' : 'row'}
+    // {(stage % 2 === 0) ? 'row' : 'col'}
+    return (<span className='col'>
+      <div className='row'>{rounds[stage]}, [</div><br />{draw(size-1, stage + 1)}
+      <span className='row'>VS</span> 
+      {draw(size-1, stage + 1)}{(size - 1 !== 1) ? ']' : ''}
+    </span>)
+  }
+}
+
+function rowByRow(size, stage=0) {
+  if (stage === 0) {
+    return (
+    <div className='container'>
+      <div className='row align-content-center'>
+        <div className='col text-center'>
+          Winner
+        </div>
+      </div>
+      {rowByRow(size, stage + 1)}
+    </div>)
+  }
+  else if (stage === size) {
+
+    let participants = [];
+    for (let i = 1; i <= (size * 2); i++) {
+      participants.push(<div className='col text-center'>Name</div>)
     }
-    let indent2 = indent.substring(0, size - 1);
-    console.log(indent2)
-    return <span><br />{indent}Undecided size={size}, (<br />{draw(size-1)}<br /> {indent2}VS {draw(size-1)})</span>
+
+    return (
+      <div className='row align-content-center'>
+        {participants}
+      </div>
+    )
+  }
+  else {
+
+    let round = [];
+    for (let i = 1; i <= (size * 2); i++) {
+      round.push(<div className='col text-center'>Winner</div>)
+    }    return (
+      <div className='row align-content-center'>
+        {round}
+      </div>
+    )
   }
 }
 
 function App() {
-  return (
-    <div>
-      {draw(3)}
+  return (<div>
+    {rowByRow(2)}
     </div>
   );
 }

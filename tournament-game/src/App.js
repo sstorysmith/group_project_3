@@ -1,63 +1,116 @@
 import React from 'react';
 
-function draw(size, stage=0) {
-  const rounds = ["Finals", "Semi-Finals", "Quarter-finals", "Octafinals", "Round 2", "Round 1"];
-  console.log('Stage', stage, stage % 2);
-  if (size === 1) {
-    return <span className='col'><div className='row'>{rounds[stage]},</div><div className='col'>[Name VS Name]</div></span>
-  }
-  else {
-    // {(stage % 2 === 0) ? 'col' : 'row'}
-    // {(stage % 2 === 0) ? 'row' : 'col'}
-    return (<span className='col'>
-      <div className='row'>{rounds[stage]}, [</div><br />{draw(size-1, stage + 1)}
-      <span className='row'>VS</span> 
-      {draw(size-1, stage + 1)}{(size - 1 !== 1) ? ']' : ''}
-    </span>)
-  }
+const rounds = ['Champion', 'Finals', 'Semi-finals', 'Quarter-finals', 'Octa-finals']
+
+function generateBracket(size) {
+
+  const bracket = []
+
+  // Track relationship between nodes and their children with a "parent" object
+  // Parent.index is the index of the parent node for the given node being added
+  // Child 0 is the parent node of the entire bracket
+  // Child 1 is the left child of the given parent node
+  // Child 2 is the right child of the given parent node
+  let parent = {index: 0,
+                child: 0}
+
+  // Populates all nodes in bracket 
+  // (2^(size + 1) - 1) total # of nodes in bracket
+  for (let i = 0; i < (Math.pow(2, size + 1) - 1); i++) {
+
+    // If the previous node was the rightmost child of a parent node
+      if (parent.child === 2) {
+
+        // Reset parent tracker to the parent of current node
+        parent.index = ((i - 1)/2);
+        parent.child = 0
+
+      }
+
+      // If node is not the parent node of the entire bracket
+      // "Root" or "Champion" node
+      if (i !== parent.index) {
+
+        // Increment child counter. 
+        // This will happen twice for any given parent node, once for each child.
+        parent.child = parent.child + 1;
+        
+      }
+
+      // Set node content depending on "row" (set of y=2^x: 1, 2, 4, 8)
+      // i: 0 r: 1; i: 1,2 r: 2; i: 3,4,5,6 r: 4; i: 7, 8, 9, 10, 11, 12, 13, 14 r: 8
+      // Find 12
+      // At Node: 0
+      // Row 0:
+      // At Node: 1
+      // Row 1:
+      // At Node: 3
+      // Row 2: 
+      // At Node: 7
+      // Row 3:
+      // At Node: 15
+      // Too Far
+      // Node 12 is on row 3
+      let pointer = 0;
+      let row = 0;
+      // console.log(i)
+      for (let x = 0; x <= size; x++) {
+        let y = Math.pow(2, x);
+        // console.log('y', y)
+        pointer = pointer + y;
+        // console.log('pointer', pointer)
+        if (pointer > i) {
+          // console.log('Too far')
+          row = x;
+          break;
+        }
+      }
+      let content = (row === size) ? 'Name' : rounds[row];
+      console.log('content', content)
+      bracket.push({content: content, parent: {index: parent.index, child: parent.child}});
+
+  };
+
+  return bracket;
+
 }
 
-function rowByRow(size, stage=0) {
-  if (stage === 0) {
-    return (
-    <div className='container'>
-      <div className='row align-content-center'>
-        <div className='col text-center'>
-          Winner
-        </div>
-      </div>
-      {rowByRow(size, stage + 1)}
-    </div>)
-  }
-  else if (stage === size) {
+function renderFromArray(arr) {
 
-    let participants = [];
-    for (let i = 1; i <= (size * 2); i++) {
-      participants.push(<div className='col text-center'>Name</div>)
+  console.log(arr);
+
+  const tree = [];
+
+  // Traverse every row in the bracket array
+  // log2(arr.length + 1) - 1 = rows
+  for (let i = 0; i <= (Math.log2(arr.length + 1) - 1); i++) {
+
+    // Traverse every node in the bracket row
+    // Nodes per row is 2 ^ row (1, 2, 4, 8 etc)
+    let row = [];
+    for (let j = 0; j < Math.pow(2, i); j++) {
+
+      row.push(
+      <div className='col text-center card'>
+        {(i <= 1) ? i+j : Math.pow(2, i) - 1 + j}
+      </div>)
+    
     }
 
-    return (
-      <div className='row align-content-center'>
-        {participants}
-      </div>
-    )
-  }
-  else {
+    tree.push(
+    <div className='row'>
+      {row}
+    </div>)
 
-    let round = [];
-    for (let i = 1; i <= (size * 2); i++) {
-      round.push(<div className='col text-center'>Winner</div>)
-    }    return (
-      <div className='row align-content-center'>
-        {round}
-      </div>
-    )
   }
+
+  return tree;
+
 }
 
 function App() {
-  return (<div>
-    {rowByRow(2)}
+  return (<div className='container'>
+    {renderFromArray(generateBracket(5))}
     </div>
   );
 }

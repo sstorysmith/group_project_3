@@ -21,6 +21,9 @@ function Nav() {
                 <Link style={navStyle} to='/profile'>
                     <il>Profile</il>
                 </Link>
+                <Link style={navStyle} to='/Login'>
+                    <il>Login</il>
+                </Link>
             </ul>
         </nav>
     );

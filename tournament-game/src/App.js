@@ -1,5 +1,5 @@
 import React from 'react';  
-import {Bracket, BracketProvider} from './components';
+import {Bracket, TourneyProvider, DebugToolbar} from './components';
 import {Switch, Route, Link} from 'react-router-dom';
 import './index.css';
 import Navbar from './components/Navbar';
@@ -11,6 +11,7 @@ function App(props) {
   return (
     <div>
     <div className='container'>
+<<<<<<< HEAD
          < Navbar/>
 
       <div className='row'>
@@ -23,18 +24,21 @@ function App(props) {
           {/* <button type="button" class="btn btn-primary btn-xs">XSmall</button> */}
         </h3>
       </div>
+=======
+      <DebugToolbar />
+>>>>>>> 2b8ffe3c768667b6da49f9e8c1fdde0c5273c627
       <Switch>
         <Route path='/:number' 
           render={(props) => {
             return (
-              <div className='row' id='tournament-container'>
-                <BracketProvider {...props}>
+            <div className='row' id='tournament-container'>
+              <TourneyProvider {...props}>
                   <Bracket />
-                </BracketProvider>
-              </div>
+              </TourneyProvider>
+            </div>
             )
           }}
-        />
+         />
       </Switch>
     </div>
     <div className= "container">

@@ -36,4 +36,21 @@ function Navbar(props) {
 
 }
 
+<<<<<<< HEAD
 export default Navbar;
+=======
+      {/* NEW - add a link to the home and profile pages */}
+    {isAuthenticated && (
+      <span>
+        <Link to="/">Home</Link>&nbsp;
+        <Link to="/profile">Profile</Link>
+        <Link to="/tournament">Tournament</Link>
+        <Link to="/about">About</Link>
+      </span>
+    )}
+    </div>
+  );
+};
+
+export default NavBar;
+>>>>>>> 580d5ae877946458a00ef96b92305494b639d877

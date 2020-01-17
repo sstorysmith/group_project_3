@@ -5,8 +5,8 @@ function Card(props) {
     console.log(props)
 
     return (
-        <div class="card" style={{width: "18 rem"}}>
-             <img src={img} class="card-img-top" alt="..."/>
+        <div className="card col-lg-3 col-md-4 col-sm-6 col-12">
+             <img src={img} width="600" height="400" className="card-img-top" alt="..."/>
         </div>
         )
 }

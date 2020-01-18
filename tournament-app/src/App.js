@@ -61,53 +61,9 @@ function App(props) {
     </div>
     </div>
 
-<<<<<<< HEAD
   )
 };
 
 
-=======
-import React from "react";
-import NavBar from "./components/NavBar";
-import {Tournament, TourneyProvider, Bracket} from "./components";
-// New - import the React Router components, and the Profile page component
-import { Router, Route, Switch } from "react-router-dom";
-import Profile from "./components/pages/Profile";
-import history from "./utils/history";
-import PrivateRoute from "./components/PrivateRoute";
-import About from "./components/pages/About";
-
-
-function App() {
-  return (
-    <div className="App">
-      {/* Don't forget to include the history module */}
-      <Router history={history}>
-        <header>
-          <NavBar />
-        </header>
-        <Switch>
-          <Route path="/" exact />
-          <Route path="/About" exact component={(props) => (<About />)} />
-          {/* NEW - Modify the /profile route to use PrivateRoute instead of Route */}
-          <PrivateRoute exact path="/profile" render={(props) => (<Profile />)} />
-          <Route path="/tournament" component={(props) => (<Tournament {...props}/>)} />
-          {/* <Route path='/tournament/:number' 
-            render={(props) => {
-              return (
-              <div className='row' id='tournament-container'>
-                <TourneyProvider {...props}>
-                    <Bracket />
-                </TourneyProvider>
-              </div>
-              )
-            }}
-          /> */}
-        </Switch>
-      </Router>
-    </div>
-  );
-}
->>>>>>> 580d5ae877946458a00ef96b92305494b639d877
 
 export default App;
